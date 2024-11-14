@@ -31,8 +31,8 @@ Strings in Solidity are dynamic types and when they are concatenated using `abi.
 
 
 /// INSECURE
-
-function addUsers(address[] calldata admins, address[] calldata regularUsers, bytes calldata signature) external {
+function addUsers(address[] calldata admins, address[] calldata regularUsers, bytes calldata signature) external 
+{
     if (!isAdmin[msg.sender]) {
         bytes32 hash = keccak256(abi.encodePacked(admins, regularUsers));
         address signer = hash.toEthSignedMessageHash().recover(signature);
