@@ -1,14 +1,12 @@
- # Hash Collision when using `abi.encodePacked()` with Multiple Variable-Length Arguments
 
-In Solidity, the `abi.encodePacked()` function is used to create tightly packed byte arrays which can then be hashed using `keccak256()`
+In Solidity, you can use the abi.encodePacked() function to create a tightly packed byte array that can then be hashed using keccak256().
 
-However, this function can be dangerous when used with multiple variable-length arguments because it can lead to hash collisions. These collisions can potentially be exploited in scenarios such as signature verification, allowing attackers to bypass authorization mechanisms.
-
-**Hash Collision** is a situation where two different sets of inputs produce the same hash output. In this context, a hash collision can occur when using `abi.encodePacked()` with multiple variable-length arguments, allowing an attacker to craft different inputs that produce the same hash.
+However, using this function with multiple variable length arguments is dangerous because it can result in hash collisions. These collisions can be exploited in scenarios such as signature verification, allowing attackers to bypass authentication mechanisms.
+**Hash Collision** is a situation where two different sets of inputs produce the same hash output. In this context, using abi.encodePacked() with multiple arguments of variable length can result in hash collisions, allowing an attacker to create different inputs that produce the same hash.
 
 ## Understanding the vulnerability
 
-When `abi.encodePacked()` is used with multiple variable-length arguments (such as arrays and strings), the packed encoding does not include information about the boundaries between different arguments. This can lead to situations where different combinations of arguments result in the same encoded output, causing hash collisions.
+When abi.encodePacked() is used with multiple variable length arguments (such as arrays or strings), the packed encoding does not contain any information about the boundaries between the different arguments, which can lead to situations where different combinations of arguments result in the same encoded output, resulting in hash collisions.
 
 For example, consider the following two calls to `abi.encodePacked()`:
 
@@ -30,18 +28,7 @@ abi.encodePacked("foo", "bar") == abi.encodePacked("fo", "obar")
 
 Strings in Solidity are dynamic types and when they are concatenated using `abi.encodePacked()`, there is no delimiter between them to mark their boundaries, which can lead to hash collisions.
 
-As a matter of fact, the below warning is taken as it is straight from the [official solidity language documentation](https://docs.soliditylang.org/en/latest/abi-spec.html#non-standard-packed-mode) regarding the same.
 
-
-> [!WARNING]
-> If you use `keccak256(abi.encodePacked(a, b))` and both `a` and `b` are dynamic types, it is easy to craft collisions in the hash value by moving parts of `a` into `b` and vice-versa.
-> More specifically, `abi.encodePacked("a", "bc") == abi.encodePacked("ab", "c")`. If you use `abi.encodePacked` for signatures, authentication or data integrity, make sure to always use the same types and check that at most one of them is dynamic. Unless there is a compelling reason, `abi.encode` should be preferred.
-
-
-## Sample Code Analysis
-
-
-```solidity
 /// INSECURE
 function addUsers(address[] calldata admins, address[] calldata regularUsers, bytes calldata signature) external {
     if (!isAdmin[msg.sender]) {
@@ -122,6 +109,14 @@ function addUsers(address[3] calldata admins, address[3] calldata regularUsers, 
 ```
 
 In this version, fixed-length arrays are used, which mitigates the risk of hash collisions since the encoding is unambiguous.
+
+## Excution 
+
+![image](https://github.com/user-attachments/assets/53b018ed-2573-4d30-a503-ba042d8529bd)
+
+![image](https://github.com/user-attachments/assets/e35584ab-cea5-4d8a-ba2a-44d3fb9a7cb4)
+
+
 
 
 ## Remediation Strategies
