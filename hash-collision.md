@@ -1,4 +1,5 @@
-
+## Introdution
+ 
 In Solidity, you can use the abi.encodePacked() function to create a tightly packed byte array that can then be hashed using keccak256().
 
 However, using this function with multiple variable length arguments is dangerous because it can result in hash collisions. These collisions can be exploited in scenarios such as signature verification, allowing attackers to bypass authentication mechanisms.
@@ -112,9 +113,11 @@ In this version, fixed-length arrays are used, which mitigates the risk of hash 
 
 ## Excution 
 
-![image](https://github.com/user-attachments/assets/53b018ed-2573-4d30-a503-ba042d8529bd)
+![Screenshot (8)](https://github.com/user-attachments/assets/0bcf18cc-d518-40ba-b1d2-5c5ac7750866)
 
-![image](https://github.com/user-attachments/assets/e35584ab-cea5-4d8a-ba2a-44d3fb9a7cb4)
+
+![Screenshot (9)](https://github.com/user-attachments/assets/ecc8aa06-d299-4205-a15b-7d52dee15c2d)
+
 
 
 
