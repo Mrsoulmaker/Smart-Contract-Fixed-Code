@@ -31,6 +31,7 @@ Strings in Solidity are dynamic types and when they are concatenated using `abi.
 
 
 /// INSECURE
+
 function addUsers(address[] calldata admins, address[] calldata regularUsers, bytes calldata signature) external {
     if (!isAdmin[msg.sender]) {
         bytes32 hash = keccak256(abi.encodePacked(admins, regularUsers));
@@ -44,11 +45,13 @@ function addUsers(address[] calldata admins, address[] calldata regularUsers, by
         isRegularUser[regularUsers[i]] = true;
     }
 }
+
 ```
 
 In the provided sample code above, the `addUsers` function uses `abi.encodePacked(admins, regularUsers)` to generate a hash. An attacker could exploit this by rearranging elements between the `admins` and `regularUsers` arrays, resulting in the same hash and thereby bypassing authorization checks.
 
 ```solidity
+
 /// INSECURE
 function verifyMessage(string calldata message1, string calldata message2, bytes calldata signature) external {
     bytes32 hash = keccak256(abi.encodePacked(message1, message2));
