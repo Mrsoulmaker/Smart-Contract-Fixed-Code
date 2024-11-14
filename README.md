@@ -45,7 +45,8 @@ function addUsers(address[] calldata admins, address[] calldata regularUsers, by
     }
 }
 
-In the provided sample code above, the `addUsers` function uses `abi.encodePacked(admins, regularUsers)` to generate a hash. An attacker could exploit this by rearranging elements between the `admins` and `regularUsers` arrays, resulting in the same hash and thereby bypassing authorization checks.
+
+```In the provided sample code above, the `addUsers` function uses `abi.encodePacked(admins, regularUsers)` to generate a hash. An attacker could exploit this by rearranging elements between the `admins` and `regularUsers` arrays, resulting in the same hash and thereby bypassing authorization checks.
 
 ```solidity
 
